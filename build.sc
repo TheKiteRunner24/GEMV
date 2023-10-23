@@ -2,7 +2,7 @@ import mill._, scalalib._
 import os.Path
 
 object top extends ScalaModule {
-  def scalaVersion = "2.12.12"
+  def scalaVersion = "2.12.13"
   override def millSourcePath = os.pwd
   def scalaOptions = Seq(
     "-language:reflectiveCalls",
@@ -14,11 +14,11 @@ object top extends ScalaModule {
   )
 
   override def ivyDeps = Agg(
-    ivy"edu.berkeley.cs::chisel3:3.5.0"
+    ivy"edu.berkeley.cs::chisel3:3.5.5"
   )
   
   override def scalacPluginIvyDeps = Agg(
-    ivy"edu.berkeley.cs:::chisel3-plugin:3.5.0",
+    ivy"edu.berkeley.cs:::chisel3-plugin:3.5.5",
   )
 
 } 

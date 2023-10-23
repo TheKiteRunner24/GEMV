@@ -21,11 +21,11 @@ void sim_init(int argc, char *argv[]) {
 	top->reset = 1;
 	top->clock = 0;
 #ifdef VCD
-	Verilated::mkdir("logs");
+	Verilated::mkdir("wave");
 	contextp->traceEverOn(true);
 	tfp = new VerilatedVcdC;
-	top->trace(tfp, 99);
-    tfp->open("logs/top.vcd");
+	top->trace(tfp, 99); // 99是trace的深度
+    tfp->open("wave/top.vcd");
 #endif
 	Verilated::commandArgs(argc,argv);
 }
@@ -36,6 +36,7 @@ void sim_exit() {
 	top->final();
 #if VCD
 	tfp->close();
+	delete tfp;
 	tfp = nullptr;
 #endif
 }

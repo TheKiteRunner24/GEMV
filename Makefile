@@ -28,7 +28,7 @@ endif
 # C flags
 INC_PATH += $(abspath ./sim_c/include)
 INCFLAGS = $(addprefix -I, $(INC_PATH))
-CFLAGS += $(INCFLAGS) $(CFLAGS_SIM) -DTOP_NAME="V$(TOPNAME)"
+CFLAGS += $(INCFLAGS) $(CFLAGS_SIM) -DTOP_NAME="V$(TOPNAME)" -DVCD
 
 # source file
 CSRCS = $(shell find $(abspath ./sim_c) -name "*.c" -or -name "*.cc" -or -name "*.cpp")
@@ -46,20 +46,21 @@ run:
 	@echo
 	@echo "------------ RUN --------------"
 	$(NPC_EXEC)
-ifeq ($(vcd), 1)
-	@echo "----- see vcd file in logs dir ----"
-else
-	@echo "----- if you need vcd file. add vcd=1 to make ----"
-endif
 	
 srun: sim run
 
+bsp:
+	mill -i mill.bsp.BSP/install
+
+idea:
+	mill -i mill.scalalib.GenIdea/idea
+
 clean:
-	-rm -rf $(BUILD_DIR) logs
+	-rm -rf $(BUILD_DIR) wave
 
 clean_mill:
 	-rm -rf out
 
 clean_all: clean clean_mill
 
-.PHONY: clean clean_all clean_mill srun run sim verilog
+.PHONY: clean clean_all clean_mill srun run sim verilog bsp idea

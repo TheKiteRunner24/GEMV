@@ -55,6 +55,9 @@ bsp:
 idea:
 	mill -i mill.scalalib.GenIdea/idea
 
+gtk:
+	gtkwave ./wave/top.vcd
+
 clean:
 	-rm -rf $(BUILD_DIR) wave
 
@@ -63,4 +66,4 @@ clean_mill:
 
 clean_all: clean clean_mill
 
-.PHONY: clean clean_all clean_mill srun run sim verilog bsp idea
+.PHONY: clean clean_all clean_mill srun run sim verilog bsp idea gtk

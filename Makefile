@@ -10,8 +10,7 @@ SCALA_FILE = $(shell find ./src/main -name '*.scala')
 VERILATOR = verilator
 VERILATOR_COVERAGE = verilator_coverage
 # verilator flags
-VERILATOR_FLAGS += -Wall -MMD --trace --build -cc --exe \
-									 -O3 --x-assign fast --x-initial fast --noassert -report-unoptflat
+VERILATOR_FLAGS += -Wall -MMD --trace --build -cc --exe
 
 # timescale set
 VERILATOR_FLAGS += --timescale 1us/1us
@@ -33,21 +32,20 @@ CFLAGS += $(INCFLAGS) $(CFLAGS_SIM) -DTOP_NAME="V$(TOPNAME)" -DVCD
 # source file
 CSRCS = $(shell find $(abspath ./sim_c) -name "*.c" -or -name "*.cc" -or -name "*.cpp")
 
-BIN = $(BUILD_DIR)/$(TOP)
-NPC_EXEC := $(BIN)
+EXEC = $(BUILD_DIR)/$(TOP)
 
 sim: $(CSRCS) verilog
 	@rm -rf $(OBJ_DIR)
 	$(VERILATOR) $(VERILATOR_FLAGS) -top $(TOPNAME) $(CSRCS) $(wildcard $(BUILD_DIR)/verilog/*.v) \
 		$(addprefix -CFLAGS , $(CFLAGS)) $(addprefix -LDFLAGS , $(LDFLAGS)) \
-		--Mdir $(OBJ_DIR) -o $(abspath $(BIN))
+		--Mdir $(OBJ_DIR) -o $(abspath $(EXEC))
 
 run:
 	@echo
 	@echo "------------ RUN --------------"
-	$(NPC_EXEC)
+	$(EXEC)
 	
-srun: sim run
+go: sim run gtk
 
 bsp:
 	mill -i mill.bsp.BSP/install

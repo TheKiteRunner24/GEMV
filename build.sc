@@ -18,7 +18,7 @@ object top extends ScalaModule {
   )
   
   override def scalacPluginIvyDeps = Agg(
-    ivy"edu.berkeley.cs:::chisel3-plugin:3.5.5",
+    ivy"edu.berkeley.cs:::chisel3-plugin:3.5.5"
   )
 
 } 

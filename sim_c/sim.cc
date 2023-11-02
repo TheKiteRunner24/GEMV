@@ -43,13 +43,13 @@ void sim_exit() {
 
 void single_cycle() {
 	contextp->timeInc(1);
-	top->clock = 0; top->eval();
+	top->clock = 1; top->eval();
 #ifdef VCD
  tfp->dump(contextp->time());
 #endif
 
 	contextp->timeInc(1);
-	top->clock = 1; top->eval();
+	top->clock = 0; top->eval();
 #ifdef VCD
  tfp->dump(contextp->time());
 #endif
@@ -66,18 +66,55 @@ void sim_main(int argc, char *argv[]) {
 	sim_init(argc, argv);
 	reset(10);
 
-	/* main simulation*/
-	int sim_time = 0;
-	int seq_ptr = 0;
-	int seq[] = {1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0};
 
-	/* main loop */
-	while (!contextp->gotFinish() && (sim_time <= 20)) {
-		seq_ptr = (seq_ptr + 1) % 14;
-		top->io_in = seq[seq_ptr];
+    top->io_in_control_0_done = 0;
+    top->io_in_control_1_done = 0;
+    top->io_in_a_0 = 1;
+    top->io_in_a_1 = 0;
+    top->io_in_b_0 = 5;
+    top->io_in_b_1 = 0;
+
+    top->io_in_c_0 = 0;
+    top->io_in_c_1 = 0;
+    single_cycle();
+
+    top->io_in_control_0_done = 0;
+    top->io_in_control_1_done = 0;
+    top->io_in_a_0 = 2;
+    top->io_in_a_1 = 3;
+    top->io_in_b_0 = 7;
+    top->io_in_b_1 = 6;
+
+    top->io_in_c_0 = 0;
+    top->io_in_c_1 = 0;
+    single_cycle();
+
+    top->io_in_control_0_done = 0;
+    top->io_in_control_1_done = 0;
+    top->io_in_a_0 = 0;
+    top->io_in_a_1 = 4;
+    top->io_in_b_0 = 0;
+    top->io_in_b_1 = 8;
+
+    top->io_in_c_0 = 0;
+    top->io_in_c_1 = 0;
+    single_cycle();
+
+    top->io_in_control_0_done = 0;
+    top->io_in_control_1_done = 0;
+    top->io_in_a_0 = 0;
+    top->io_in_a_1 = 0;
+    top->io_in_b_0 = 0;
+    top->io_in_b_1 = 0;
+
+    top->io_in_c_0 = 0;
+    top->io_in_c_1 = 0;
+    single_cycle();
+
+
+    int sim_time = 0;
+	while (!contextp->gotFinish() && (sim_time <= 10)) {
 		single_cycle();
-		cout << "in: " << seq[seq_ptr] << "\t";
-		cout << "out: " << bitset<1>(top->io_out) <<endl;
 		sim_time++;
 	}
 

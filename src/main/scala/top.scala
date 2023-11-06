@@ -7,32 +7,63 @@ import chisel3.stage._
 import SA._
 
 
-class top extends Module {
-  val io = IO(new Bundle {
-    val in_control = Input(Vec(2, new PEControl))
-    val in_a = Input(Vec(2, UInt(8.W)))
-    val in_b = Input(Vec(2, UInt(8.W)))
-    val in_c = Input(Vec(2, UInt(32.W)))
+//class top extends Module {
+//  val io = IO(new Bundle {
+//    val in_control = Input(Vec(2, new PEControl))
+//    val in_a = Input(Vec(2, UInt(8.W)))
+//    val in_b = Input(Vec(2, UInt(8.W)))
+//    val in_c = Input(Vec(2, UInt(32.W)))
+//
+//    val out_control = Output(Vec(2, new PEControl))
+//    val out_a = Output(Vec(2, UInt(8.W)))
+//    val out_b = Output(Vec(2, UInt(8.W)))
+//    val out_c = Output(Vec(2, UInt(32.W)))
+//  })
+//
+//  val sa = Module(new SA(8,32,2,2))
+//
+//  sa.io.in_a := io.in_a
+//  sa.io.in_b := io.in_b
+//  sa.io.in_c := io.in_c
+//  sa.io.in_control := io.in_control
+//
+//  io.out_a := sa.io.out_a
+//  io.out_b := sa.io.out_b
+//  io.out_c := sa.io.out_c
+//  io.out_control := sa.io.out_control
+//}
 
-    val out_control = Output(Vec(2, new PEControl))
-    val out_a = Output(Vec(2, UInt(8.W)))
-    val out_b = Output(Vec(2, UInt(8.W)))
-    val out_c = Output(Vec(2, UInt(32.W)))
+class top(val IN_WIDTH: Int, val C_WIDTH: Int, val DP_WIDTH:Int, val TPE_WIDTH: Int) extends Module {
+  val io = IO(new Bundle {
+    val in_control = Input(Vec(TPE_WIDTH, new DPcontrolIO))
+    val in_data = Input(Vec(TPE_WIDTH, new DPdataIO(IN_WIDTH, C_WIDTH, DP_WIDTH)))
+
+    val out_control = Output(Vec(TPE_WIDTH, new DPcontrolIO))
+    val out_data = Output(Vec(TPE_WIDTH, new DPdataIO(IN_WIDTH, C_WIDTH, DP_WIDTH)))
   })
 
-  val sa = Module(new SA(8,32,2,2))
+  val tpe = Module(new TPE(IN_WIDTH,C_WIDTH,DP_WIDTH,TPE_WIDTH))
 
-  sa.io.in_a := io.in_a
-  sa.io.in_b := io.in_b
-  sa.io.in_c := io.in_c
-  sa.io.in_control := io.in_control
+  tpe.io <> io
 
-  io.out_a := sa.io.out_a
-  io.out_b := sa.io.out_b
-  io.out_c := sa.io.out_c
-  io.out_control := sa.io.out_control
 }
+
+//class top(val IN_WIDTH: Int, val C_WIDTH: Int, val DP_WIDTH: Int) extends Module {
+//  val io = IO(new Bundle {
+//    val in_control = Input(new DPcontrolIO)
+//    val in_data = Input(new DPdataIO(IN_WIDTH, C_WIDTH, DP_WIDTH))
+//
+//    val out_control = Output(new DPcontrolIO)
+//    val out_data = Output(new DPdataIO(IN_WIDTH, C_WIDTH, DP_WIDTH))
+//  })
+//  val dp = Module(new DP(8,32,2))
+//
+//  dp.io <> io
+//}
+
 
 object topMain extends App {
-  (new ChiselStage).emitVerilog(new top, args)
+  (new ChiselStage).emitVerilog(new top(8,32,2,2), args)
 }
+
+

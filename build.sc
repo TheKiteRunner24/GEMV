@@ -1,24 +1,32 @@
-import mill._, scalalib._
-import os.Path
+// import Mill dependency
+import mill._
+import mill.define.Sources
+import mill.modules.Util
+import mill.scalalib.TestModule.ScalaTest
+import scalalib._
+// support BSP
+import mill.bsp._
 
-object top extends ScalaModule {
-  def scalaVersion = "2.12.13"
+object top extends SbtModule { m =>
   override def millSourcePath = os.pwd
-  def scalaOptions = Seq(
+  override def scalaVersion = "2.13.8"
+  override def scalacOptions = Seq(
     "-language:reflectiveCalls",
     "-deprecation",
     "-feature",
     "-Xcheckinit",
-    "-P:chiselplugin:genBundleElements",
-    "-Xsource:2.11"
+    "-P:chiselplugin:genBundleElements"
   )
-
   override def ivyDeps = Agg(
-    ivy"edu.berkeley.cs::chisel3:3.5.5"
+    ivy"edu.berkeley.cs::chisel3:3.5.4"
   )
-  
   override def scalacPluginIvyDeps = Agg(
-    ivy"edu.berkeley.cs:::chisel3-plugin:3.5.5"
+    ivy"edu.berkeley.cs:::chisel3-plugin:3.5.4"
   )
+  object test extends Tests with ScalaTest {
+    override def ivyDeps = m.ivyDeps() ++ Agg(
+      ivy"edu.berkeley.cs::chiseltest:0.5.4"
+    )
+  }
+}
 
-} 

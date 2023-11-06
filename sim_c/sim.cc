@@ -43,13 +43,13 @@ void sim_exit() {
 
 void single_cycle() {
 	contextp->timeInc(1);
-	top->clock = 1; top->eval();
+	top->clock = 0; top->eval();
 #ifdef VCD
  tfp->dump(contextp->time());
 #endif
 
 	contextp->timeInc(1);
-	top->clock = 0; top->eval();
+	top->clock = 1; top->eval();
 #ifdef VCD
  tfp->dump(contextp->time());
 #endif
@@ -62,54 +62,87 @@ void reset(int n) {
 	top->eval();
 }
 
+//void sim_main(int argc, char *argv[]) {
+//	sim_init(argc, argv);
+//	reset(10);
+//
+//
+//    top->io_in_control_0_done = 0;
+//    top->io_in_control_1_done = 0;
+//    top->io_in_a_0 = 1;
+//    top->io_in_a_1 = 0;
+//    top->io_in_b_0 = 5;
+//    top->io_in_b_1 = 0;
+//
+//    top->io_in_c_0 = 0;
+//    top->io_in_c_1 = 0;
+//    single_cycle();
+//
+//    top->io_in_control_0_done = 0;
+//    top->io_in_control_1_done = 0;
+//    top->io_in_a_0 = 2;
+//    top->io_in_a_1 = 3;
+//    top->io_in_b_0 = 7;
+//    top->io_in_b_1 = 6;
+//
+//    top->io_in_c_0 = 0;
+//    top->io_in_c_1 = 0;
+//    single_cycle();
+//
+//    top->io_in_control_0_done = 0;
+//    top->io_in_control_1_done = 0;
+//    top->io_in_a_0 = 0;
+//    top->io_in_a_1 = 4;
+//    top->io_in_b_0 = 0;
+//    top->io_in_b_1 = 8;
+//
+//    top->io_in_c_0 = 0;
+//    top->io_in_c_1 = 0;
+//    single_cycle();
+//
+//    top->io_in_control_0_done = 0;
+//    top->io_in_control_1_done = 0;
+//    top->io_in_a_0 = 0;
+//    top->io_in_a_1 = 0;
+//    top->io_in_b_0 = 0;
+//    top->io_in_b_1 = 0;
+//
+//    top->io_in_c_0 = 0;
+//    top->io_in_c_1 = 0;
+//    single_cycle();
+//
+//
+//    int sim_time = 0;
+//	while (!contextp->gotFinish() && (sim_time <= 10)) {
+//		single_cycle();
+//		sim_time++;
+//	}
+//
+//	sim_exit();
+//}
+
 void sim_main(int argc, char *argv[]) {
 	sim_init(argc, argv);
 	reset(10);
 
-
     top->io_in_control_0_done = 0;
     top->io_in_control_1_done = 0;
-    top->io_in_a_0 = 1;
-    top->io_in_a_1 = 0;
-    top->io_in_b_0 = 5;
-    top->io_in_b_1 = 0;
+    top->io_in_control_1_ = 1;
+    top->io_in_data_0_a_0 = 2;
+    top->io_in_data_0_a_1 = 3;
+    top->io_in_data_0_b_0 = 4;
+    top->io_in_data_0_b_1
+    top->io_in_data_1_a_0 = 5;
+    top->io_in_data_1_a_1 = 6;
+    top->io_in_data_1_b_0 = 7;
+    top->io_in_data_1_b_1 = 8;
 
-    top->io_in_c_0 = 0;
-    top->io_in_c_1 = 0;
+    top->io_in_data_c = 0;
     single_cycle();
 
-    top->io_in_control_0_done = 0;
-    top->io_in_control_1_done = 0;
-    top->io_in_a_0 = 2;
-    top->io_in_a_1 = 3;
-    top->io_in_b_0 = 7;
-    top->io_in_b_1 = 6;
 
-    top->io_in_c_0 = 0;
-    top->io_in_c_1 = 0;
-    single_cycle();
 
-    top->io_in_control_0_done = 0;
-    top->io_in_control_1_done = 0;
-    top->io_in_a_0 = 0;
-    top->io_in_a_1 = 4;
-    top->io_in_b_0 = 0;
-    top->io_in_b_1 = 8;
 
-    top->io_in_c_0 = 0;
-    top->io_in_c_1 = 0;
-    single_cycle();
-
-    top->io_in_control_0_done = 0;
-    top->io_in_control_1_done = 0;
-    top->io_in_a_0 = 0;
-    top->io_in_a_1 = 0;
-    top->io_in_b_0 = 0;
-    top->io_in_b_1 = 0;
-
-    top->io_in_c_0 = 0;
-    top->io_in_c_1 = 0;
-    single_cycle();
 
 
     int sim_time = 0;
